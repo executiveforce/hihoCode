@@ -1,5 +1,7 @@
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Collections;
+import java.util.ArrayList;
 
 /**
  * 常用排序算法
@@ -23,11 +25,12 @@ public class SortAlgorithm {
 		}
     	System.out.println();
     	//bubbleSort(a);
-    	selectSort(a);
+    	//selectSort(a);
     	//insertSort(a);
     	//quickSort(a, 0, n-1);
     	//shellSort(a);
     	//heapSort(a);
+    	System.out.println(bucketSort(a));
     	System.out.println("排序后：");
     	for (int i : a) {
 			System.out.print(i+" ");
@@ -177,6 +180,49 @@ public class SortAlgorithm {
 			}
 			
 		}
+	}
+
+	/*
+	 * 桶排序：
+	 *	1、桶排序是稳定的；
+	 *	2、桶排序是常见排序里最快的一种，比快排还要快（大多情况下）
+	 *	3、桶排序非常快，但是同时也非常熬时间，基本上是最耗空间的一种排序算法
+	 *	参考：http://blog.csdn.net/lg1259156776/article/details/48803043
+	 *		 http://www.cnblogs.com/zer0Black/p/6169858.html#3
+	 *  桶排序要求数据的分布必须均匀，否则可能导致数据都集中到一个桶中，导致桶排序失败。
+	 */
+	public static String bucketSort(int[] arr){
+
+		int max = Integer.MIN_VALUE;
+		int min = Integer.MAX_VALUE;
+		for (int i = 0; i < arr.length; i++) {
+			max = Math.max(max,arr[i]);
+			min = Math.min(min,arr[i]);
+		}
+
+		int bucketNum = (max-min)/arr.length+1;//桶数
+		ArrayList<ArrayList<Integer>> bucketArr = new ArrayList<>(bucketNum);
+		for (int i = 0; i < bucketNum; i++) {
+			bucketArr.add(new ArrayList<Integer>());
+		}
+
+		for (int i = 0; i < arr.length; i++) {
+			int num = (arr[i]-min)/(arr.length);
+			bucketArr.get(num).add(arr[i]);
+		}
+
+		for (int i = 0; i < bucketArr.size(); i++) {
+			Collections.sort(bucketArr.get(i));
+		}
+		return bucketArr.toString();
+
+	}
+
+	/*
+	 * 基数排序
+	*/
+	public static void radixSort(int[] a){
+
 	}
 	
 }
