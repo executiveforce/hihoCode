@@ -29,8 +29,8 @@ public class SortAlgorithm {
     	//insertSort(a);
     	//quickSort(a, 0, n-1);
     	//shellSort(a);
-    	//heapSort(a);
-    	System.out.println(bucketSort(a));
+    	heapSort(a);
+    	//System.out.println(bucketSort(a));
     	System.out.println("排序后：");
     	for (int i : a) {
 			System.out.print(i+" ");
