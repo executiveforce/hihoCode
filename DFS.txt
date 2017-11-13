@@ -1,0 +1,102 @@
+深度优先遍历图的方法是，从图中某顶点v出发：
+	1、访问顶点v;
+	2、依次从v的未被访问的邻接节点出发，对图进行深度优先遍历；直至途中和V有路径相同的顶点都被访问；
+	3、若此时图中尚有顶点未被访问，则从一个未被访问的顶点出发，重新进行深度优先遍历，直到图中所有顶点均被访问过为止。
+
+图的两种存储结构：二维矩阵；邻接表
+
+算法实现：
+	1、使用栈来实现：
+		将初始节点压栈；
+		while(栈非空){
+			取出栈顶点，暂时存储这个节点node_t信息；
+			访问该节点，并且标记已访问；
+			将栈顶元素出栈；
+			for(遍历node_t的相邻的未访问过的节点){
+				将其入栈；
+			}
+		}
+	2、使用递归来实现：
+		1）DFS(初始节点)
+		2）function DFS(一个节点){
+		3)	访问该节点，并且标记已访问；
+		4）	for(遍历该节点的相邻的未访问过的节点){
+		5)		DFS(这个邻接节点)
+			}
+		   }
+
+实例：给出5个数和一个目标数，判断，利用其中的五个数判断能否通过简单的运算得到那个目标数。如果能则输出目标数，否则输出这五个数能凑到的小于目标数的最大的那个数。（除法必须要求能够进行整除）
+递归实现：
+#include<iostream>
+#include<vector>
+
+using namespace std;
+int max_vlaue,target;
+
+bool dfsearch(vector<int> vec){
+	int len = vec.size();
+	for(int i = 0; i < len; i++){
+		if(vec[i] == target)
+			return true;
+		if(vec[i] > max_value && vec[i] < target)
+			max_value = vec[i];
+	}
+
+	for(int i = 0; i < len; i++){
+		for(int j = i+1; j < len; j++){
+			vector<int> temp;
+			for(int k = 0; k < len; k++)
+				if(k != i && k != j)
+					temp.push_back(vec[k]);
+
+			temp.push_back(vec[i]+vec[j]);
+			if(dfsearch(temp) == true)
+				return true;
+			temp.pop_back();
+
+			temp.push_back(vec[i]-vec[j]);
+			if(dfsearch(temp) == true)
+				return true;
+			temp.pop_back();
+
+			temp.push_back(vec[j]-vec[i]);
+			if(dfsearch(temp) == true)
+				return true;
+			temp.pop_back();
+
+			temp.push_back(vec[i]*vec[j]);
+			if(dfsearch(temp) == true)
+				return true;
+			temp.pop_back();
+
+			if(vec[i]==0||vec[j]==0)
+				continue;
+
+			int max_t = max(vec[i],vec[j]);
+			int min_t = min(vec[i],vec[j]);
+			if(max_t % min_t == 0){
+				temp.push_back(max_t/min_t);
+				if(dfsearch(temp) == true)
+					return true;
+				temp.pop_back();
+			}
+		}
+	}
+	return false;
+}
+
+int main(){
+	int num;
+	cin >> num;
+	while(num--){
+		vector<int> vec(5);
+		for(itn i = 0; i < 5; i++)
+			cin >> vec[i];
+		max_value = -9999;
+		cin >> target;
+		if(dfsearch(vec) == true)
+			cout << target << endl;
+		else
+			cout << max_value <<endl;
+	}
+}
