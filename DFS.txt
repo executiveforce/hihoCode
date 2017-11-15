@@ -45,14 +45,15 @@ bool dfsearch(vector<int> vec){
 	for(int i = 0; i < len; i++){
 		for(int j = i+1; j < len; j++){
 			vector<int> temp;
+			//把没用过的数放入vector中；
 			for(int k = 0; k < len; k++)
 				if(k != i && k != j)
 					temp.push_back(vec[k]);
 
-			temp.push_back(vec[i]+vec[j]);
+			temp.push_back(vec[i]+vec[j]);//在数组最后添加数据
 			if(dfsearch(temp) == true)
 				return true;
-			temp.pop_back();
+			temp.pop_back();//去掉数组中最后一个数据
 
 			temp.push_back(vec[i]-vec[j]);
 			if(dfsearch(temp) == true)
